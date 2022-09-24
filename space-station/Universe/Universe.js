@@ -3,6 +3,10 @@ import Sizes from './Utils/Sizes';
 import Camera from './Camera';
 import Renderer from "./Renderer";
 import Time from "./Utils/Time";
+import Resources from './Utils/Resources';
+import assets from './Utils/Assets';
+
+import Earth from './Earth/Earth';
 
 export default class Universe {
 	static instance
@@ -17,6 +21,8 @@ export default class Universe {
 		this.sizes = new Sizes();
 		this.camera = new Camera();
 		this.renderer = new Renderer();
+		this.resources = new Resources(assets);
+		this.earth = new Earth();
 
 		this.sizes.on("resize", () => {
 			this.resize();

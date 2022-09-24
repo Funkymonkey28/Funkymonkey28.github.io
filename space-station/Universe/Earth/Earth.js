@@ -1,0 +1,27 @@
+import Universe from '../Universe';
+import Iss from './Iss';
+import Environment from './Environment';
+
+export default class Earth {
+	constructor() {
+		this.universe = new Universe();
+		this.sizes = this.universe.sizes;
+		this.scene = this.universe.scene;
+		this.canvas = this.universe.canvas;
+		this.camera = this.universe.camera;
+		this.resources = this.universe.resources;
+
+		this.resources.on("ready", () => {
+			this.environment = new Environment();
+			this.Iss = new Iss();
+		});
+	}
+
+	resize() {
+
+	}
+
+	update() {
+
+	}
+}
