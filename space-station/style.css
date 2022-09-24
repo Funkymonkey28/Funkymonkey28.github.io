@@ -102,13 +102,13 @@ button:focus-visible {
   box-sizing: border-box;
 }
 
-.world {
+.universe {
   position: fixed;
   width: 100vw;
   height: 100vh;
 }
 
-.world-canvas {
+.universe-canvas {
   width: 100%;
   height: 100%;
 }

@@ -1,4 +1,4 @@
 import './style.css'
-import World from "./World/World.js"
+import Universe from './Universe/Universe'
 
-const world = new World(document.querySelector(".world-canvas"))
+const universe = new Universe(document.querySelector(".universe-canvas"))
