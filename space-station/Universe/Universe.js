@@ -7,6 +7,7 @@ import Resources from './Utils/Resources';
 import assets from './Utils/Assets';
 
 import Earth from './Earth/Earth';
+import PickMesh from './Utils/PickMesh';
 
 export default class Universe {
 	static instance
@@ -23,6 +24,7 @@ export default class Universe {
 		this.renderer = new Renderer();
 		this.resources = new Resources(assets);
 		this.earth = new Earth();
+		this.pick = new PickMesh();
 
 		this.sizes.on("resize", () => {
 			this.resize();
