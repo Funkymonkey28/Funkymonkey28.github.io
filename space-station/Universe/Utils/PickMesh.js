@@ -1,8 +1,10 @@
 import Universe from '../Universe';
 import * as THREE from "three";
+import { EventEmitter } from "events";
 
-export default class PickMesh {
+export default class PickMesh extends EventEmitter{
 	constructor( meshes ) {
+		super();
 		this.meshes = meshes;
 
 		this.universe = new Universe();
@@ -13,6 +15,7 @@ export default class PickMesh {
 		
 		this.raycaster = new THREE.Raycaster();
 		this.pointer = new THREE.Vector2();
+		this.selectedMesh = null;
 		this.highlightedMesh = null;
 
 		//window.addEventListener( 'pointermove', this.onPointerMove );
@@ -25,13 +28,46 @@ export default class PickMesh {
 		});
 
 		window.addEventListener( 'click', () => {
-			console.log(this.highlightedMesh);
+			window.requestAnimationFrame( () => {
+				// update the picking ray with the camera and pointer position
+				this.raycaster.setFromCamera( this.pointer, this.camera.perspectiveCamera );
+				// calculate objects intersecting the picking ray
+				const intersects = this.raycaster.intersectObjects( this.meshes );
+	
+				//Taking the first intersected object. This works
+				if(intersects.length > 0){
+					this.resetSelectedMaterials();
+					let mesh = intersects[ 0 ].object;
+					mesh.material.color.set( 0x00ff00 );
+					this.selectedMesh = mesh;
+					this.emit("meshSelected");
+
+				}
+			} );
+			//console.log(this.selectedMesh);
 			//NOTE: create clear overlay to stop any interaction with mesh when info is being displayed
 		})
+
+		window.addEventListener( 'keydown', (event) => {
+			const key = event.key;
+			if ( key === "Backspace" || key === "Delete" || key === "Escape"){
+				if (this.highlightedMesh){
+					this.highlightedMesh.material.color.set( 0xffffff );
+					this.highlightedMesh = null;
+				}
+
+				if (this.selectedMesh){
+					this.selectedMesh.material.color.set( 0xffffff );
+					this.selectedMesh = null;
+				}
+
+				this.emit("meshSelected");
+			}
+		});
 	}
 
 	highlight() {
-		this.resetMaterials();
+		this.resetHoverMaterials();
 		this.hoverMesh();
 		this.renderer.update();
 	}
@@ -47,17 +83,30 @@ export default class PickMesh {
 			if(intersects.length > 0){
 				//console.log(intersects[0]);
 				let mesh = intersects[ 0 ].object;
-				mesh.material.color.set( 0xff0000 );
-				this.highlightedMesh = mesh;
+				if(mesh !== this.selectedMesh){
+					mesh.material.color.set( 0xff0000 );
+					this.highlightedMesh = mesh;
+				}
+			}
+			else {
+				this.highlightedMesh = null;
 			}
 		} );	
 	}
 
-	resetMaterials() {
-		if(this.highlightedMesh){
+	resetHoverMaterials() {
+		//NOTE: parent is selected. But when one of the childs gets a hover it resets the parent. Not desired
+		if(this.highlightedMesh && (this.highlightedMesh !== this.selectedMesh)){
 			this.highlightedMesh.material.color.set( 0xffffff );
 			this.highlightedMesh = null;
 		}
 	};
+
+	resetSelectedMaterials() {
+		if(this.selectedMesh && (this.highlightedMesh !== this.selectedMesh)) {
+			this.selectedMesh.material.color.set( 0xffffff );
+			this.selectedMesh = null;
+		}
+	}
 }
 

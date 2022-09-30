@@ -14,7 +14,11 @@ export default class Iss {
 
 		this.meshArray = new Array();
 		this.setModel();
-		
+
+		this.pickIss.on("meshSelected", () => {
+			this.selectedIssComponent = this.pickIss.selectedMesh;
+			console.log(this.selectedIssComponent);
+		})
 	}
 
 	setModel() {
