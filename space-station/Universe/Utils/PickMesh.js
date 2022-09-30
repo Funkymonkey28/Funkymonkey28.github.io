@@ -2,7 +2,9 @@ import Universe from '../Universe';
 import * as THREE from "three";
 
 export default class PickMesh {
-	constructor() {
+	constructor( meshes ) {
+		this.meshes = meshes;
+
 		this.universe = new Universe();
 		this.scene = this.universe.scene;
 		this.resources = this.universe.resources;
@@ -11,7 +13,7 @@ export default class PickMesh {
 		
 		this.raycaster = new THREE.Raycaster();
 		this.pointer = new THREE.Vector2();
-		this.highlightedMesh = new Array();
+		this.highlightedMesh = null;
 
 		//window.addEventListener( 'pointermove', this.onPointerMove );
 		window.addEventListener( 'pointermove', (event) => {
@@ -21,6 +23,11 @@ export default class PickMesh {
 			this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 			this.highlight();
 		});
+
+		window.addEventListener( 'click', () => {
+			console.log(this.highlightedMesh);
+			//NOTE: create clear overlay to stop any interaction with mesh when info is being displayed
+		})
 	}
 
 	highlight() {
@@ -34,31 +41,23 @@ export default class PickMesh {
 			// update the picking ray with the camera and pointer position
 			this.raycaster.setFromCamera( this.pointer, this.camera.perspectiveCamera );
 			// calculate objects intersecting the picking ray
-			const intersects = this.raycaster.intersectObjects( this.scene.children );
-	
-			// for ( let i = 0; i < intersects.length; i ++ ) {
-			// 	intersects[ i ].object.material.color.set( 0xff0000 );
-			// }
+			const intersects = this.raycaster.intersectObjects( this.meshes );
+
+			//Taking the first intersected object. This works
 			if(intersects.length > 0){
-				console.log(intersects[0]);
-				let meshMaterial = intersects[ 0 ].object.material;
-				meshMaterial.color.set( 0xff0000 );
-				this.highlightedMesh.push(meshMaterial);
+				//console.log(intersects[0]);
+				let mesh = intersects[ 0 ].object;
+				mesh.material.color.set( 0xff0000 );
+				this.highlightedMesh = mesh;
 			}
 		} );	
 	}
 
 	resetMaterials() {
-		// for (let i = 0; i < this.scene.children.length; i++) {
-		// 	console.log(this.scene.children);
-		// 	if(this.scene.children[i].material) {
-		// 		this.scene.children.material.color.set(0xffffff);
-		// 	}
-		// }
-		for (let i = 0; i < this.highlightedMesh.length; i++) {
-			this.highlightedMesh[i].color.set( 0xffffff );
+		if(this.highlightedMesh){
+			this.highlightedMesh.material.color.set( 0xffffff );
+			this.highlightedMesh = null;
 		}
-		this.highlightedMesh = new Array();
 	};
 }
 
