@@ -1,0 +1,10 @@
+Solar panel location
+_root
+"02_Unity_Node_1"
+"09_Destiny_Space_Laboratory"
+"14_S0_Truss"
+"17_P1_Truss"
+"20_P4_Truss"
+"21_P5_Truss"
+"20_P4_Truss_01"
+"p6_ani000_25"
