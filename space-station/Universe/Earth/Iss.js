@@ -10,13 +10,15 @@ export default class Iss {
 		this.resources = this.universe.resources;
 		this.iss = this.resources.items.iss;
 		this.actualIss = this.iss.scene;
-		//console.log(this.actualIss.children);
+		console.log(this.iss);
 
 		this.meshArray = new Array();
 		this.setModel();
 
 		this.pickIss.on("meshSelected", () => {
 			this.selectedIssComponent = this.pickIss.selectedMesh;
+			this.findComponentName(this.selectedIssComponent);
+			console.log(this.selectedIssComponentName);
 			console.log(this.selectedIssComponent);
 		})
 	}
@@ -41,9 +43,16 @@ export default class Iss {
 		}
 	}
 	
-	//Remove unimportant groups and remove
-	cleanMeshGroup( uncleanedMesh ){
-
+	findComponentName( mesh ){
+		if(parseInt(mesh.name.slice(0,1)) < 46) {
+			this.selectedIssComponentName = mesh.name;
+		}
+		else if(parseInt(mesh.parent.name.slice(0,1)) < 46) {
+			this.selectedIssComponentName = mesh.parent.name;
+		}
+		else if(mesh.parent){
+			this.findComponentName(mesh.parent);
+		}
 	}
 
 	resize() {
