@@ -59,6 +59,7 @@ export default class PickMesh extends EventEmitter{
 				if (this.selectedMesh){
 					this.selectedMesh.material.color.set( 0xffffff );
 					this.selectedMesh = null;
+					console.log(this.selectedMesh);
 				}
 
 				this.emit("meshSelected");

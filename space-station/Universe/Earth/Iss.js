@@ -23,8 +23,33 @@ export default class Iss {
 
 		this.pickIss.on("meshSelected", () => {
 			this.selectedIssComponent = this.pickIss.selectedMesh;
-			this.findComponentName(this.selectedIssComponent);
-			console.log(this.selectedIssComponentName);
+			if(this.selectedIssComponent){
+				this.findComponentName(this.selectedIssComponent);
+			
+				const parent = document.getElementById("iss_info_container");
+				const child = document.getElementById("iss_info_text");
+	
+				const para = document.createElement("p");
+				const node = document.createTextNode(this.selectedIssComponentName);
+				para.setAttribute("id", "iss_info_text");
+				para.appendChild(node);
+	
+				parent.replaceChild(para, child);
+			}
+			else{
+				console.log("empty");
+
+				const parent = document.getElementById("iss_info_container");
+				const child = document.getElementById("iss_info_text");
+	
+				const para = document.createElement("p");
+				const node = document.createTextNode("");
+				para.setAttribute("id", "iss_info_text");
+				para.appendChild(node);
+	
+				parent.replaceChild(para, child);
+				
+			}
 		})
 	}
 
