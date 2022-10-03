@@ -10,16 +10,21 @@ export default class Iss {
 		this.resources = this.universe.resources;
 		this.iss = this.resources.items.iss;
 		this.actualIss = this.iss.scene;
-		console.log(this.iss);
+		//console.log(this.iss);
 
 		this.meshArray = new Array();
+		//console.log(this.meshArray);
+
+		// NOTE: currently not using, but will be useful later
+		this.issComponents = {};
+		console.log(this.issComponents);
+
 		this.setModel();
 
 		this.pickIss.on("meshSelected", () => {
 			this.selectedIssComponent = this.pickIss.selectedMesh;
 			this.findComponentName(this.selectedIssComponent);
 			console.log(this.selectedIssComponentName);
-			console.log(this.selectedIssComponent);
 		})
 	}
 
@@ -36,22 +41,32 @@ export default class Iss {
 				this.findMeshGroup(childMesh.children);
 			}
 			
-			// Useful groups on ISS model are named such that they start numbers 01 - 45.
-			if(parseInt(childMesh.name.slice(0, 1)) < 46) {
+			// Useful groups on ISS model are named such that they start numbers 01 - 46.
+			let partNo = parseInt(childMesh.name.slice(0, 2));
+			if(partNo < 47) {
 				this.meshArray.push(childMesh);
+				if(this.issComponents[partNo]){
+					this.issComponents[partNo].push(childMesh)
+				}
+				else{
+					this.issComponents[partNo] = new Array();
+					this.issComponents[partNo].push(childMesh);
+				}
 			}
 		}
 	}
 	
 	findComponentName( mesh ){
-		if(parseInt(mesh.name.slice(0,1)) < 46) {
-			this.selectedIssComponentName = mesh.name;
-		}
-		else if(parseInt(mesh.parent.name.slice(0,1)) < 46) {
-			this.selectedIssComponentName = mesh.parent.name;
-		}
-		else if(mesh.parent){
-			this.findComponentName(mesh.parent);
+		if(mesh){
+			if(parseInt(mesh.name.slice(0,1)) < 47) {
+				this.selectedIssComponentName = mesh.name;
+			}
+			else if(parseInt(mesh.parent.name.slice(0,1)) < 47) {
+				this.selectedIssComponentName = mesh.parent.name;
+			}
+			else if(mesh.parent){
+				this.findComponentName(mesh.parent);
+			}
 		}
 	}
 
