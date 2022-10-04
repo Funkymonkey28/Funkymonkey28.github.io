@@ -1,32 +1,32 @@
-import Universe from '../Universe';
-
 export default class Modal {
-  constructor(){    
+  constructor( caller ){
+    this.caller = caller;
+
     // Show Modal
-    const openModalButton = document.getElementById("open-modal");
-    const modalWindowOverlay = document.getElementById("modal-overlay");
+    this.modalWindowOverlay = document.getElementById("modal-overlay");
     const showModalWindow = () => {
-      modalWindowOverlay.style.display = 'flex';
+      this.modalWindowOverlay.style.display = 'flex';
+      document.getElementById("m-header").innerHTML = this.caller.getModalInfo()["header"];
+      document.getElementById("m-content").innerHTML = this.caller.getModalInfo()["content"];
     }
-    openModalButton.addEventListener("click", showModalWindow); //NOTE: change to when component is selected
+
+    this.caller.on("showInfo", showModalWindow);
 
     // Hide Modal
-    const closeModalButton = document.getElementById("close-modal");
+    this.closeModalButton = document.getElementById("close-modal");
     const hideModalWindow = () => {
-        modalWindowOverlay.style.display = 'none';
+        this.modalWindowOverlay.style.display = 'none';
     }
-    closeModalButton.addEventListener("click", hideModalWindow);
-
+    this.closeModalButton.addEventListener("click", hideModalWindow);
+    this.caller.on("closeInfo", hideModalWindow);
 
     // Hide On Blur
     const hideModalWindowOnBlur = (e) => {
-
         if(e.target === e.currentTarget) {
           console.log(e.target === e.currentTarget)
             hideModalWindow();
         }
     }
-    modalWindowOverlay.addEventListener("click", hideModalWindowOnBlur)
-
+    this.modalWindowOverlay.addEventListener("click", hideModalWindowOnBlur)
     }
 }

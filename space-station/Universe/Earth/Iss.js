@@ -2,9 +2,11 @@ import Universe from '../Universe';
 import PickMesh from '../Utils/PickMesh';
 import * as THREE from "three";
 import Modal from '../Utils/Modal';
+import EventEmitter from 'events';
 
-export default class Iss {
+export default class Iss extends EventEmitter{
 	constructor() {
+		super();
 		this.universe = new Universe();
 		this.scene = this.universe.scene;
 
@@ -16,7 +18,7 @@ export default class Iss {
 		this.meshArray = new Array();
 		//console.log(this.meshArray);
 
-		this.modal = new Modal();
+		this.modal = new Modal(this);
 
 		// NOTE: currently not using, but will be useful later
 		this.issComponents = {};
@@ -28,12 +30,17 @@ export default class Iss {
 			this.selectedIssComponent = this.pickIss.selectedMesh;
 			if(this.selectedIssComponent){
 				this.findComponentName(this.selectedIssComponent);
-				this.updateIssInfo(this.selectedIssComponentName);
-				//this.modal.showModalWindow();
+
+				//Show modal
+				this.emit("showInfo");
 			}
 			else{
-				this.updateIssInfo("");		
+				
 			}
+		})
+
+		this.pickIss.on("noMeshSelected", () => {
+			this.emit("closeInfo");
 		})
 	}
 
@@ -79,17 +86,16 @@ export default class Iss {
 		}
 	}
 
-	// Side bar pop up for info on component
-	updateIssInfo(description) {
-		const parent = document.getElementById("iss_info_container");
-		const child = document.getElementById("iss_info_text");
-
-		const para = document.createElement("p");
-		const node = document.createTextNode(description);
-		para.setAttribute("id", "iss_info_text");
-		para.appendChild(node);
-
-		parent.replaceChild(para, child);
+	getModalInfo() {
+		let info = {}
+		if(this.selectedIssComponentName){
+			info["header"] = this.selectedIssComponentName;
+		}
+		else{
+			info["header"] = "";
+		}
+		info["body"] = "testing";
+		return info;
 	}
 
 	resize() {
