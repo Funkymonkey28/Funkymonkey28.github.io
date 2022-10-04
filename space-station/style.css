@@ -137,6 +137,8 @@ button:hover {
   display: none;
   align-items: center;
   justify-content: center;
+
+  flex-direction: row;
 }
 #modal-overlay #modal {
   z-index: 1;

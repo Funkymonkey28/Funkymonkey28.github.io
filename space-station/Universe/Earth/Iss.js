@@ -40,7 +40,7 @@ export default class Iss extends EventEmitter{
 		})
 
 		this.pickIss.on("noMeshSelected", () => {
-			this.emit("closeInfo");
+			//this.emit("closeInfo");
 		})
 	}
 
