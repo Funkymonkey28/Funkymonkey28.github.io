@@ -1,6 +1,7 @@
 import Universe from '../Universe';
 import PickMesh from '../Utils/PickMesh';
 import * as THREE from "three";
+import Modal from '../Utils/Modal';
 
 export default class Iss {
 	constructor() {
@@ -15,6 +16,8 @@ export default class Iss {
 		this.meshArray = new Array();
 		//console.log(this.meshArray);
 
+		this.modal = new Modal();
+
 		// NOTE: currently not using, but will be useful later
 		this.issComponents = {};
 		console.log(this.issComponents);
@@ -25,30 +28,11 @@ export default class Iss {
 			this.selectedIssComponent = this.pickIss.selectedMesh;
 			if(this.selectedIssComponent){
 				this.findComponentName(this.selectedIssComponent);
-			
-				const parent = document.getElementById("iss_info_container");
-				const child = document.getElementById("iss_info_text");
-	
-				const para = document.createElement("p");
-				const node = document.createTextNode(this.selectedIssComponentName);
-				para.setAttribute("id", "iss_info_text");
-				para.appendChild(node);
-	
-				parent.replaceChild(para, child);
+				this.updateIssInfo(this.selectedIssComponentName);
+				//this.modal.showModalWindow();
 			}
 			else{
-				console.log("empty");
-
-				const parent = document.getElementById("iss_info_container");
-				const child = document.getElementById("iss_info_text");
-	
-				const para = document.createElement("p");
-				const node = document.createTextNode("");
-				para.setAttribute("id", "iss_info_text");
-				para.appendChild(node);
-	
-				parent.replaceChild(para, child);
-				
+				this.updateIssInfo("");		
 			}
 		})
 	}
@@ -93,6 +77,19 @@ export default class Iss {
 				this.findComponentName(mesh.parent);
 			}
 		}
+	}
+
+	// Side bar pop up for info on component
+	updateIssInfo(description) {
+		const parent = document.getElementById("iss_info_container");
+		const child = document.getElementById("iss_info_text");
+
+		const para = document.createElement("p");
+		const node = document.createTextNode(description);
+		para.setAttribute("id", "iss_info_text");
+		para.appendChild(node);
+
+		parent.replaceChild(para, child);
 	}
 
 	resize() {
