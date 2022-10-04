@@ -8,6 +8,7 @@ export default class PickMesh extends EventEmitter{
 		this.meshes = meshes;
 
 		this.universe = new Universe();
+		this.canvas = this.universe.canvas;
 		this.scene = this.universe.scene;
 		this.resources = this.universe.resources;
 		this.camera = this.universe.camera;
@@ -20,10 +21,24 @@ export default class PickMesh extends EventEmitter{
 
 		//window.addEventListener( 'pointermove', this.onPointerMove );
 		window.addEventListener( 'pointermove', (event) => {
-			// calculate pointer position in normalized device coordinates
-			// (-1 to +1) for both components
-			this.pointer.x = (( event.clientX / window.innerWidth ) * 2 - 1);
-			this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			// this.pointer.x = (( event.clientX / this.bounds.width ) * 2 - 1);
+			// this.pointer.y = - ( event.clientY / this.bounds.height ) * 2 + 1;
+
+			//const rect = document.getElementById("canvas-main").getBoundingClientRect();
+			const rect = this.canvas.getBoundingClientRect();
+			this.pointer.x = ( ( event.clientX - rect.left ) / ( rect. right - rect.left ) ) * 2 - 1;
+			this.pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
+
+			console.log(this.pointer.x);
+			console.log(this.pointer.y);
+
+			// console.log("bounds height: " + this.bounds.height);
+			// console.log("bounds width: " + this.bounds.width);
+			console.log(this.bounds);
+
+			console.log("innnerHeight: " + window.innerHeight);
+			console.log("innerWidth: " + window.innerWidth);
+			console.log("-----------------------------------");
 			this.highlight();
 		});
 

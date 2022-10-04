@@ -128,19 +128,6 @@ button:hover {
 }
 
 #modal-overlay {
-  //z-index: 1;
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  //background: rgba(0, 0, 0, 0.7);
-
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  flex-direction: row;
-}
-#modal-overlay #modal {
   z-index: 1;
   max-width: 650px;
   width: 100%;
@@ -152,21 +139,17 @@ button:hover {
   padding:10px;
 }
 
-#modal-overlay #modal .modal-footer {
-  margin-top: auto;
-}
-
 /* Model */
-.universe {
+/* .universe {
   position: fixed;
   width: 100vw;
   height: 100vh;
-}
+} */
 
-.universe-canvas {
+/* .universe-canvas {
   width: 100%;
   height: 100%;
-}
+} */
 
 #iss_info_container{
   background: gray;

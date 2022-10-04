@@ -7,25 +7,22 @@
     <title>Vite App</title>
   </head>
   <body>
-    <div id="modal-overlay">
-      <div id="modal">
-    
-        <div class="modal-header">
-          <h2 id="m-header" >Modal Pop Up Window</h2>
-        </div>
-    
-        <div class="modal-content">
-          <p id="m-content">Modal Content</p>
-        </div>
-    
-        <div class="modal-footer">
-          <button id="close-modal">Close</button>
-        </div>
-      </div>
-    </div>
-
     <div class="universe">
-      <canvas class="universe-canvas"></canvas>
+      <canvas id="canvas-main" class="universe-canvas"></canvas>
+    </div>
+  
+    <div id="modal-overlay">
+      <div class="modal-header">
+        <h2 id="m-header" >Modal Pop Up Window</h2>
+      </div>
+  
+      <div class="modal-content">
+        <p id="m-content">Modal Content</p>
+      </div>
+  
+      <div class="modal-footer">
+        <button id="close-modal">Close</button>
+      </div>
     </div>
 
     <script type="module" src="/main.js"></script>
