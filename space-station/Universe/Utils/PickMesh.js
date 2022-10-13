@@ -29,16 +29,16 @@ export default class PickMesh extends EventEmitter{
 			this.pointer.x = ( ( event.clientX - rect.left ) / ( rect. right - rect.left ) ) * 2 - 1;
 			this.pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
 
-			console.log(this.pointer.x);
-			console.log(this.pointer.y);
+			// console.log(this.pointer.x);
+			// console.log(this.pointer.y);
 
 			// console.log("bounds height: " + this.bounds.height);
 			// console.log("bounds width: " + this.bounds.width);
 			console.log(this.bounds);
 
-			console.log("innnerHeight: " + window.innerHeight);
-			console.log("innerWidth: " + window.innerWidth);
-			console.log("-----------------------------------");
+			// console.log("innnerHeight: " + window.innerHeight);
+			// console.log("innerWidth: " + window.innerWidth);
+			// console.log("-----------------------------------");
 			this.highlight();
 		});
 
@@ -76,7 +76,7 @@ export default class PickMesh extends EventEmitter{
 				if (this.selectedMesh){
 					this.selectedMesh.material.color.set( 0xffffff );
 					this.selectedMesh = null;
-					console.log(this.selectedMesh);
+					//console.log(this.selectedMesh);
 				}
 
 				this.emit("meshSelected");

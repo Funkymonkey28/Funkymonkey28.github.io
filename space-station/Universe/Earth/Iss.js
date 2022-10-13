@@ -22,7 +22,7 @@ export default class Iss extends EventEmitter{
 
 		// NOTE: currently not using, but will be useful later
 		this.issComponents = {};
-		console.log(this.issComponents);
+		//console.log(this.issComponents);
 
 		this.setModel();
 
