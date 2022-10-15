@@ -26,23 +26,20 @@ export default class Iss extends EventEmitter{
 			if(this.selectedIssComponent){
 				this.findComponentName(this.selectedIssComponent);
 
-				//Adjust selection area
-				this.pickIss.addXCursorConstraint(-1,0.5);
 				//Show modal
 				this.emit("showInfo");
 			}
 		})
 
 		this.pickIss.on("meshDeselected", () => {
-			//Adjust selection area
-			this.pickIss.resetXCursorConstraint();
-
 			this.emit("closeInfo");
 		})
 
 		this.modal.on("close", () => {
+			//NOTE: bad design, should move into the PickMesh class
 			//Adjust selection area
 			this.pickIss.resetXCursorConstraint();
+			this.pickIss.resetSelectedMaterials();
 		})
 	}
 

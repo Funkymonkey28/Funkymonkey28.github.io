@@ -33,6 +33,9 @@ export default class PickMesh extends EventEmitter{
 			if(this.cursor.x <= this.xCursorConstraint["max"] &&  this.cursor.x >= this.xCursorConstraint["min"]){
 				this.highlight();
 			}
+			else{
+				this.resetHoverMaterials();
+			}
 			
 		});
 
@@ -48,8 +51,13 @@ export default class PickMesh extends EventEmitter{
 					if(intersects.length > 0){
 						this.resetSelectedMaterials();
 						let mesh = intersects[ 0 ].object;
+					
 						mesh.material.color.set( 0x00ff00 );
+				
 						this.selectedMesh = mesh;
+						
+						//Adjust selection area
+						this.addXCursorConstraint(-1,0.5);
 						this.emit("meshSelected");
 					}
 					else{
@@ -72,6 +80,8 @@ export default class PickMesh extends EventEmitter{
 					this.selectedMesh = null;
 					//console.log(this.selectedMesh);
 				}
+				//Adjust selection area
+				this.resetXCursorConstraint();
 				this.emit("meshDeselected");
 			}
 		});
