@@ -13,16 +13,11 @@ export default class Iss extends EventEmitter{
 		this.resources = this.universe.resources;
 		this.iss = this.resources.items.iss;
 		this.actualIss = this.iss.scene;
-		//console.log(this.iss);
-
 		this.meshArray = new Array();
-		//console.log(this.meshArray);
-
 		this.modal = new Modal(this);
-
 		// NOTE: currently not using, but will be useful later
 		this.issComponents = {};
-		//console.log(this.issComponents);
+		console.log(this.issComponents);
 
 		this.setModel();
 
@@ -33,9 +28,6 @@ export default class Iss extends EventEmitter{
 
 				//Show modal
 				this.emit("showInfo");
-			}
-			else{
-				
 			}
 		})
 
