@@ -34,10 +34,22 @@ button:hover {
   background: rgba(0, 0, 0, 0.7);
 }
 
+.modal-footer {
+  position: absolute;
+  bottom: 10px;
+}
+
+.modal-content {
+  height: 100%;
+  padding: 10px;
+}
+
 #modal-overlay {
+  position: relative;
   z-index: 1;
   width: 400px;
   height: 100vh;
+  border-bottom: 10px;
 
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.8);

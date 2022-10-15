@@ -15,38 +15,46 @@ export default class PickMesh extends EventEmitter{
 		this.renderer = this.universe.renderer;
 		
 		this.raycaster = new THREE.Raycaster();
-		this.pointer = new THREE.Vector2();
+		this.cursor = new THREE.Vector2();
+		this.xCursorConstraint = {
+			"min": -1,
+			"max": 1,
+		};
 		this.selectedMesh = null;
 		this.highlightedMesh = null;
 
 		window.addEventListener( 'pointermove', (event) => {
-			// this.pointer.x = (( event.clientX / this.bounds.width ) * 2 - 1);
-			// this.pointer.y = - ( event.clientY / this.bounds.height ) * 2 + 1;
-
+			// this.cursor.x = (( event.clientX / this.bounds.width ) * 2 - 1);
+			// this.cursor.y = - ( event.clientY / this.bounds.height ) * 2 + 1;
 			const rect = this.canvas.getBoundingClientRect();
-			this.pointer.x = ( ( event.clientX - rect.left ) / ( rect. right - rect.left ) ) * 2 - 1;
-			this.pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
+			this.cursor.x = ( ( event.clientX - rect.left ) / ( rect. right - rect.left ) ) * 2 - 1;
+			this.cursor.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
 
-			this.highlight();
+			if(this.cursor.x <= this.xCursorConstraint["max"] &&  this.cursor.x >= this.xCursorConstraint["min"]){
+				this.highlight();
+			}
+			
 		});
 
 		window.addEventListener( 'click', () => {
 			window.requestAnimationFrame( () => {
-				// update the picking ray with the camera and pointer position
-				this.raycaster.setFromCamera( this.pointer, this.camera.perspectiveCamera );
-				// calculate objects intersecting the picking ray
-				const intersects = this.raycaster.intersectObjects( this.meshes );
-	
-				//Taking the first intersected object. This works
-				if(intersects.length > 0){
-					this.resetSelectedMaterials();
-					let mesh = intersects[ 0 ].object;
-					mesh.material.color.set( 0x00ff00 );
-					this.selectedMesh = mesh;
-					this.emit("meshSelected");
-				}
-				else{
-					//this.emit("meshDeselected");
+				if(this.cursor.x <= this.xCursorConstraint["max"] &&  this.cursor.x >= this.xCursorConstraint["min"]){
+					// update the picking ray with the camera and pointer position
+					this.raycaster.setFromCamera( this.cursor, this.camera.perspectiveCamera );
+					// calculate objects intersecting the picking ray
+					const intersects = this.raycaster.intersectObjects( this.meshes );
+		
+					//Taking the first intersected object. This works
+					if(intersects.length > 0){
+						this.resetSelectedMaterials();
+						let mesh = intersects[ 0 ].object;
+						mesh.material.color.set( 0x00ff00 );
+						this.selectedMesh = mesh;
+						this.emit("meshSelected");
+					}
+					else{
+						//this.emit("meshDeselected");
+					}
 				}
 			} );
 		})
@@ -78,7 +86,7 @@ export default class PickMesh extends EventEmitter{
 	hoverMesh() {
 		window.requestAnimationFrame( () => {
 			// update the picking ray with the camera and pointer position
-			this.raycaster.setFromCamera( this.pointer, this.camera.perspectiveCamera );
+			this.raycaster.setFromCamera( this.cursor, this.camera.perspectiveCamera );
 			// calculate objects intersecting the picking ray
 			const intersects = this.raycaster.intersectObjects( this.meshes );
 
@@ -110,6 +118,16 @@ export default class PickMesh extends EventEmitter{
 			this.selectedMesh.material.color.set( 0xffffff );
 			this.selectedMesh = null;
 		}
+	}
+
+	addXCursorConstraint(min, max){
+		this.xCursorConstraint["min"] = min;
+		this.xCursorConstraint["max"] = max;
+	}
+
+	resetXCursorConstraint(){
+		this.xCursorConstraint["min"] = -1;
+		this.xCursorConstraint["max"] = 1;
 	}
 }
 
