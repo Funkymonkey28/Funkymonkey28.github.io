@@ -11,7 +11,7 @@ export default class Resources extends EventEmitter {
 		this.renderer = this.universe.renderer;
 		
 		this.assets = assets;
-
+		
 		this.items = {};
 		this.queue = this.assets.length;
 		this.loaded = 0;
@@ -63,11 +63,12 @@ export default class Resources extends EventEmitter {
 	singleAssetLoaded(asset, file) {
 		this.items[asset.name] = file;
 		this.loaded++;
-		console.log(file);
 
 		if(asset.type==="glbModel"){
 			file.scene.traverse( function ( child ) {
-				if ( child.material ) child.material = child.material.clone();
+				if ( child.material ) {
+					child.material = child.material.clone();
+				}
 			} );
 		}
 

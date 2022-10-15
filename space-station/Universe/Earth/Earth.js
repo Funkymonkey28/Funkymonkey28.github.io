@@ -1,6 +1,7 @@
 import Universe from '../Universe';
 import Iss from './Iss';
 import Environment from './Environment';
+import issDescription from './issDescription';
 
 export default class Earth {
 	constructor() {
@@ -13,7 +14,7 @@ export default class Earth {
 
 		this.resources.on("ready", () => {
 			this.environment = new Environment();
-			this.Iss = new Iss();
+			this.Iss = new Iss(issDescription);
 		});
 	}
 

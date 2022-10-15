@@ -5,8 +5,10 @@ import Modal from '../Utils/Modal';
 import EventEmitter from 'events';
 
 export default class Iss extends EventEmitter{
-	constructor() {
+	constructor( issDescription ) {
 		super();
+
+		this.issDescription = issDescription;
 		this.universe = new Universe();
 		this.scene = this.universe.scene;
 
@@ -88,12 +90,16 @@ export default class Iss extends EventEmitter{
 	getModalInfo() {
 		let info = {}
 		if(this.selectedIssComponentName){
-			info["header"] = this.selectedIssComponentName;
+			let componentNo = parseInt(this.selectedIssComponentName.slice(0,2));
+			info["header"] = this.issDescription[componentNo]["name"];
+			info["content"] = this.issDescription[componentNo]["content"];
+			console.log(info["content"]);
 		}
 		else{
 			info["header"] = "";
+			info["body"] = "testing";
 		}
-		info["body"] = "testing";
+		
 		return info;
 	}
 
