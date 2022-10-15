@@ -46,7 +46,7 @@ export default class PickMesh extends EventEmitter{
 					this.emit("meshSelected");
 				}
 				else{
-					this.emit("noMeshSelected");
+					//this.emit("meshDeselected");
 				}
 			} );
 		})
@@ -64,7 +64,7 @@ export default class PickMesh extends EventEmitter{
 					this.selectedMesh = null;
 					//console.log(this.selectedMesh);
 				}
-				this.emit("meshSelected");
+				this.emit("meshDeselected");
 			}
 		});
 	}
