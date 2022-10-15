@@ -19,26 +19,14 @@ export default class PickMesh extends EventEmitter{
 		this.selectedMesh = null;
 		this.highlightedMesh = null;
 
-		//window.addEventListener( 'pointermove', this.onPointerMove );
 		window.addEventListener( 'pointermove', (event) => {
 			// this.pointer.x = (( event.clientX / this.bounds.width ) * 2 - 1);
 			// this.pointer.y = - ( event.clientY / this.bounds.height ) * 2 + 1;
 
-			//const rect = document.getElementById("canvas-main").getBoundingClientRect();
 			const rect = this.canvas.getBoundingClientRect();
 			this.pointer.x = ( ( event.clientX - rect.left ) / ( rect. right - rect.left ) ) * 2 - 1;
 			this.pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
 
-			// console.log(this.pointer.x);
-			// console.log(this.pointer.y);
-
-			// console.log("bounds height: " + this.bounds.height);
-			// console.log("bounds width: " + this.bounds.width);
-			console.log(this.bounds);
-
-			// console.log("innnerHeight: " + window.innerHeight);
-			// console.log("innerWidth: " + window.innerWidth);
-			// console.log("-----------------------------------");
 			this.highlight();
 		});
 
@@ -61,8 +49,6 @@ export default class PickMesh extends EventEmitter{
 					this.emit("noMeshSelected");
 				}
 			} );
-			//console.log(this.selectedMesh);
-			//NOTE: create clear overlay to stop any interaction with mesh when info is being displayed
 		})
 
 		window.addEventListener( 'keydown', (event) => {
@@ -78,7 +64,6 @@ export default class PickMesh extends EventEmitter{
 					this.selectedMesh = null;
 					//console.log(this.selectedMesh);
 				}
-
 				this.emit("meshSelected");
 			}
 		});
