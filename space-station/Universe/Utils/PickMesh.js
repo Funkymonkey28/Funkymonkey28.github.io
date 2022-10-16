@@ -3,9 +3,10 @@ import * as THREE from "three";
 import { EventEmitter } from "events";
 
 export default class PickMesh extends EventEmitter{
-	constructor( meshes ) {
+	constructor( meshes, highlightGroups ) {
 		super();
 		this.meshes = meshes;
+		this.highlightGroups = highlightGroups;
 
 		this.universe = new Universe();
 		this.canvas = this.universe.canvas;
@@ -52,8 +53,9 @@ export default class PickMesh extends EventEmitter{
 						this.resetSelectedMaterials();
 						let mesh = intersects[ 0 ].object;
 					
-						mesh.material.color.set( 0x00ff00 );
-				
+						//mesh.material.color.set( 0x00ff00 );
+						this.colourComponent(mesh, 0x00ff00);
+
 						this.selectedMesh = mesh;
 						
 						//Adjust selection area
@@ -71,12 +73,14 @@ export default class PickMesh extends EventEmitter{
 			const key = event.key;
 			if ( key === "Backspace" || key === "Delete" || key === "Escape"){
 				if (this.highlightedMesh){
-					this.highlightedMesh.material.color.set( 0xffffff );
+					//this.highlightedMesh.material.color.set( 0xffffff );
+					this.colourComponent(this.highlightedMesh, 0xffffff);
 					this.highlightedMesh = null;
 				}
 
 				if (this.selectedMesh){
-					this.selectedMesh.material.color.set( 0xffffff );
+					//this.selectedMesh.material.color.set( 0xffffff );
+					this.colourComponent(this.selectedMesh, 0xffffff);
 					this.selectedMesh = null;
 					//console.log(this.selectedMesh);
 				}
@@ -105,7 +109,8 @@ export default class PickMesh extends EventEmitter{
 				//console.log(intersects[0]);
 				let mesh = intersects[ 0 ].object;
 				if(mesh !== this.selectedMesh){
-					mesh.material.color.set( 0xff0000 );
+					//mesh.material.color.set( 0xff0000 );
+					this.colourComponent(mesh, 0xff0000);
 					this.highlightedMesh = mesh;
 				}
 			}
@@ -115,17 +120,44 @@ export default class PickMesh extends EventEmitter{
 		} );	
 	}
 
+	colourComponent( mesh, colour ) {
+		if(this.highlightGroups){
+			mesh.material.color.set(colour);
+
+			let materialGroup = mesh.name;
+			let index  = mesh.name.lastIndexOf('_');
+			let expectedUnderscoreIndex = mesh.name.length - 2;
+			if(index === expectedUnderscoreIndex){
+				materialGroup = mesh.name.slice(0, index);
+			}
+
+			console.log(mesh.name);
+			console.log(this.highlightGroups[materialGroup]);
+
+			let highlightGroup =  this.highlightGroups[materialGroup]
+			for (let componentMesh in highlightGroup){
+				highlightGroup[componentMesh].material.color.set(colour);
+			}
+
+		}
+		else{
+			mesh.material.color.set(colour);
+		}
+	}
+
 	resetHoverMaterials() {
 		//NOTE: parent is selected. But when one of the childs gets a hover it resets the parent. Not desired
 		if(this.highlightedMesh && (this.highlightedMesh !== this.selectedMesh)){
-			this.highlightedMesh.material.color.set( 0xffffff );
+			//this.highlightedMesh.material.color.set( 0xffffff );
+			this.colourComponent(this.highlightedMesh, 0xffffff);
 			this.highlightedMesh = null;
 		}
 	};
 
 	resetSelectedMaterials() {
 		if(this.selectedMesh && (this.highlightedMesh !== this.selectedMesh)) {
-			this.selectedMesh.material.color.set( 0xffffff );
+			//this.selectedMesh.material.color.set( 0xffffff );
+			this.colourComponent(this.selectedMesh, 0xffffff);
 			this.selectedMesh = null;
 		}
 	}

@@ -15,13 +15,50 @@ export default class Iss extends EventEmitter{
 		this.resources = this.universe.resources;
 		this.iss = this.resources.items.iss;
 		this.actualIss = this.iss.scene;
+	
 		this.meshArray = new Array();
 		this.modal = new Modal(this);
-		// NOTE: currently not using, but will be useful later
-		this.issComponents = {};
-		console.log(this.issComponents);
+		
+		this.issComponents = {}; // NOTE: currently not using, but will be useful later
+		this.componentMaterials = {}; //Used to find out which materials need to be highlighted for a component
 
 		this.setModel();
+
+		this.actualIss.traverse(
+			(child) => {
+				//Creating Material Array
+				let materialArray = [];
+				if(child.material){
+					let materialGroup = child.name;
+					
+					let index  = child.name.lastIndexOf('_');
+					let expectedUnderscoreIndex = child.name.length - 2;
+					if(index === expectedUnderscoreIndex){
+						materialGroup = child.name.slice(0, index);
+					}
+
+					if(this.componentMaterials[materialGroup]){
+						this.componentMaterials[materialGroup].push(child);
+					}
+					else{
+						this.componentMaterials[materialGroup] = [child];
+					}
+				}
+
+				//Organising into component name groups
+				let partNo = parseInt(child.name.slice(0, 2));
+				if(partNo < 47) {
+					this.meshArray.push(child);
+					if(this.issComponents[partNo]){
+						this.issComponents[partNo].push(child)
+					}
+					else{
+						this.issComponents[partNo] = new Array();
+						this.issComponents[partNo].push(child);
+					}
+				}
+			}
+		);
 
 		this.pickIss.on("meshSelected", () => {
 			this.selectedIssComponent = this.pickIss.selectedMesh;
@@ -47,30 +84,7 @@ export default class Iss extends EventEmitter{
 
 	setModel() {
 		this.scene.add(this.actualIss);
-		this.findMeshGroup(this.actualIss.children);
-		this.pickIss = new PickMesh(this.meshArray);
-	}
-
-	findMeshGroup( searchArray ){
-		for (let i = 0; i < searchArray.length; i++) {
-			const childMesh = searchArray[i];
-			if(childMesh.children.length > 0){
-				this.findMeshGroup(childMesh.children);
-			}
-			
-			// Useful groups on ISS model are named such that they start numbers 01 - 46.
-			let partNo = parseInt(childMesh.name.slice(0, 2));
-			if(partNo < 47) {
-				this.meshArray.push(childMesh);
-				if(this.issComponents[partNo]){
-					this.issComponents[partNo].push(childMesh)
-				}
-				else{
-					this.issComponents[partNo] = new Array();
-					this.issComponents[partNo].push(childMesh);
-				}
-			}
-		}
+		this.pickIss = new PickMesh(this.meshArray, this.componentMaterials);
 	}
 	
 	findComponentName( mesh ){
