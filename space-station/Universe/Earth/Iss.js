@@ -107,7 +107,7 @@ export default class Iss extends EventEmitter{
 			let componentNo = parseInt(this.selectedIssComponentName.slice(0,2));
 			info["header"] = this.issDescription[componentNo]["name"];
 			info["content"] = this.issDescription[componentNo]["content"];
-			console.log(info["content"]);
+			//console.log(info["content"]);
 		}
 		else{
 			info["header"] = "";

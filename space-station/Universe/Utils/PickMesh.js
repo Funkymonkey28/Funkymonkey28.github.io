@@ -131,9 +131,6 @@ export default class PickMesh extends EventEmitter{
 				materialGroup = mesh.name.slice(0, index);
 			}
 
-			console.log(mesh.name);
-			console.log(this.highlightGroups[materialGroup]);
-
 			let highlightGroup =  this.highlightGroups[materialGroup]
 			for (let componentMesh in highlightGroup){
 				highlightGroup[componentMesh].material.color.set(colour);

@@ -20,7 +20,7 @@ export default class Camera {
 			35, 
 			this.sizes.aspect,
 			0.1,
-			1000
+			7000
 		);
 		this.scene.add(this.perspectiveCamera);
 		this.perspectiveCamera.position.z = 500;
@@ -43,6 +43,8 @@ export default class Camera {
 		this.controls = new OrbitControls(this.perspectiveCamera, this.canvas);
 		this.controls.enableDamping = true;
 		this.controls.enableZoom = true;
+		this.controls.minDistance = 50;
+		this.controls.maxDistance = this.perspectiveCamera.far;
 	}
 
 	resize() {
