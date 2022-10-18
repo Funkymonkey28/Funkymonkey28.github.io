@@ -11,7 +11,7 @@ export default class Camera {
 		//console.log(this.sizes, this.scene, this.canvas, this.universe)
 
 		this.createPerspectiveCamera();
-		this.createOrthographicCamera();
+		//this.createOrthographicCamera();
 		this.setOrbitControls();
 	}
 
@@ -26,18 +26,18 @@ export default class Camera {
 		this.perspectiveCamera.position.z = 500;
 	}
 
-	createOrthographicCamera() {
-		this.frustrum = 5;
-		this.orthographicCamera = new THREE.OrthographicCamera(
-			(-this.sizes.aspect * this.sizes.frustrum)/2,
-			(this.sizes.aspect * this.sizes.frustrum)/2,
-			this.sizes.frustrum/2,
-			-this.sizes.frustrum/2,
-			-100,
-			100
-		);
-		this.scene.add(this.OrthographicCamera);
-	}
+	// createOrthographicCamera() {
+	// 	this.frustrum = 5;
+	// 	this.orthographicCamera = new THREE.OrthographicCamera(
+	// 		(-this.sizes.aspect * this.sizes.frustrum)/2,
+	// 		(this.sizes.aspect * this.sizes.frustrum)/2,
+	// 		this.sizes.frustrum/2,
+	// 		-this.sizes.frustrum/2,
+	// 		-100,
+	// 		100
+	// 	);
+	// 	this.scene.add(this.OrthographicCamera);
+	// }
 
 	setOrbitControls(){
 		this.controls = new OrbitControls(this.perspectiveCamera, this.canvas);
