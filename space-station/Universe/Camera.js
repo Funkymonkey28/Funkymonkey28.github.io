@@ -44,7 +44,7 @@ export default class Camera {
 		this.controls.enableDamping = true;
 		this.controls.enableZoom = true;
 		this.controls.minDistance = 50;
-		this.controls.maxDistance = this.perspectiveCamera.far;
+		this.controls.maxDistance = 500;
 	}
 
 	resize() {
