@@ -4,7 +4,7 @@ import Camera from './Camera';
 import Renderer from "./Renderer";
 import Time from "./Utils/Time";
 import Resources from './Utils/Resources';
-import assets from './Utils/Assets';
+import assets from './Utils/assets';
 
 import Earth from './Earth/Earth';
 
