@@ -3,6 +3,7 @@ import { EventEmitter } from "events";
 import Universe from '../Universe';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js"
+import Modal from './Modal';
 
 export default class Resources extends EventEmitter {
 	constructor(assets) {
@@ -63,9 +64,10 @@ export default class Resources extends EventEmitter {
 	singleAssetLoaded(asset, file) {
 		this.items[asset.name] = file;
 		this.loaded++;
-
+	
 		if(asset.type==="glbModel"){
-			file.scene.traverse( function ( child ) {
+			const model = file.scene;
+			model.traverse( function ( child ) {
 				if ( child.material ) {
 					child.material = child.material.clone();
 				}

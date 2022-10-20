@@ -17,13 +17,19 @@ export default class Camera {
 
 	createPerspectiveCamera() {
 		this.perspectiveCamera = new THREE.PerspectiveCamera(
-			35, 
+			70, 
 			this.sizes.aspect,
 			0.1,
 			7000
 		);
+
+		//NOTE: need this to reference the ISS
+		this.perspectiveCamera.position.x = 540;
+		this.perspectiveCamera.position.y = 548;
+		this.perspectiveCamera.position.z = 21.7;
+
+
 		this.scene.add(this.perspectiveCamera);
-		this.perspectiveCamera.position.z = 500;
 	}
 
 	// createOrthographicCamera() {
@@ -43,21 +49,25 @@ export default class Camera {
 		this.controls = new OrbitControls(this.perspectiveCamera, this.canvas);
 		this.controls.enableDamping = true;
 		this.controls.enableZoom = true;
-		this.controls.minDistance = 50;
+		this.controls.minDistance = 10;
 		this.controls.maxDistance = 500;
+
+		//NOTE: change this to reference the position of the ISS
+		this.controls.target = new THREE.Vector3(533.7583585920246,533.8013818196051,0);
+		
 	}
 
 	resize() {
-		//Updating Perspective camer on resize
+		//Updating Perspective camera on resize
 		this.perspectiveCamera.aspect = this.sizes.aspect;
 		this.perspectiveCamera.updateProjectionMatrix();
 
 		// Updating Orthogrpahic Camera on resize
-		this.orthographicCamera.left = (-this.sizes.aspect * this.sizes.frustrum)/2;
-		this.orthographicCamera.right = (this.sizes.aspect * this.sizes.frustrum)/2;
-		this.orthographicCamera.top = this.sizes.frustrum/2;
-		this.orthographicCamera.bottom = -this.sizes.frustrum/2;
-		this.orthographicCamera.updateProjectionMatrix();
+		// this.orthographicCamera.left = (-this.sizes.aspect * this.sizes.frustrum)/2;
+		// this.orthographicCamera.right = (this.sizes.aspect * this.sizes.frustrum)/2;
+		// this.orthographicCamera.top = this.sizes.frustrum/2;
+		// this.orthographicCamera.bottom = -this.sizes.frustrum/2;
+		// this.orthographicCamera.updateProjectionMatrix();
 	}
 
 	update() {

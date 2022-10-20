@@ -15,6 +15,9 @@ export default class Earth {
 		this.resources.on("ready", () => {
 			this.environment = new Environment();
 			this.Iss = new Iss(issDescription);
+
+			this.earth = this.resources.items.earth.scene;
+			this.scene.add(this.earth);
 		});
 	}
 

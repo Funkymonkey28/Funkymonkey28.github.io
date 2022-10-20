@@ -15,7 +15,16 @@ export default class Iss extends EventEmitter{
 		this.resources = this.universe.resources;
 		this.iss = this.resources.items.iss;
 		this.actualIss = this.iss.scene;
-	
+		this.actualIss.position.setY(532);
+		this.actualIss.position.setX(532);
+
+		//NOTE: need to connect this to the camera position
+		this.bb = new THREE.Box3();
+		this.bb.setFromObject(this.actualIss);
+		this.positionVector = new THREE.Vector3(0,0,0);
+		this.bb.getCenter(this.positionVector);
+		//console.log(this.positionVector);
+
 		this.meshArray = new Array();
 		this.modal = new Modal(this);
 		

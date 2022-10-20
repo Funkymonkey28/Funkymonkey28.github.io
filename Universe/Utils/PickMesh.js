@@ -25,6 +25,8 @@ export default class PickMesh extends EventEmitter{
 		this.highlightedMesh = null;
 
 		window.addEventListener( 'pointermove', (event) => {
+			//console.log(this.camera.perspectiveCamera.position);
+			
 			// this.cursor.x = (( event.clientX / this.bounds.width ) * 2 - 1);
 			// this.cursor.y = - ( event.clientY / this.bounds.height ) * 2 + 1;
 			const rect = this.canvas.getBoundingClientRect();

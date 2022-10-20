@@ -8,8 +8,9 @@ export default class Environment {
 		this.resources = this.universe.resources;
 
 		this.setSunlight();
+		this.setIssLight();
+
 		this.setStarField();
-		
 	}
 
 	setSunlight() {
@@ -20,6 +21,16 @@ export default class Environment {
 		this.sunlight.shadow.normalBias = 0.05;
 		this.sunlight.position.set(1.5, 7, 3);
 		this.scene.add(this.sunlight);
+	}
+
+	setIssLight(){
+		this.issLight1 = new THREE.PointLight( 0xffffff, 10, 100 );
+		this.issLight1.position.set( 548, 523, -19.6 );
+		this.scene.add( this.issLight1 );
+
+		this.issLight2 = new THREE.PointLight( 0xffffff, 10, 100 );
+		this.issLight2.position.set( 516, 523, -19.6 );
+		this.scene.add( this.issLight2 );
 	}
 
 	setStarField() {
