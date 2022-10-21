@@ -86,8 +86,8 @@ export default class Iss extends EventEmitter{
 		this.modal.on("close", () => {
 			//NOTE: bad design, should move into the PickMesh class
 			//Adjust selection area
-			this.pickIss.resetXCursorConstraint();
 			this.pickIss.resetSelectedMaterials();
+			this.pickIss.resetXCursorConstraint();
 		})
 	}
 

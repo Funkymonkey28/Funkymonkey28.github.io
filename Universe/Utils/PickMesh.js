@@ -23,8 +23,10 @@ export default class PickMesh extends EventEmitter{
 		};
 		this.selectedMesh = null;
 		this.highlightedMesh = null;
+		this.listenForClick = true; //NOTE: temp fix for problem where close button overlaps on mesh when clicking
 
 		window.addEventListener( 'pointermove', (event) => {
+			this.listenForClick = true;
 			//console.log(this.camera.perspectiveCamera.position);
 			
 			// this.cursor.x = (( event.clientX / this.bounds.width ) * 2 - 1);
@@ -43,15 +45,17 @@ export default class PickMesh extends EventEmitter{
 		});
 
 		window.addEventListener( 'click', () => {
+		
 			window.requestAnimationFrame( () => {
 				if(this.cursor.x <= this.xCursorConstraint["max"] &&  this.cursor.x >= this.xCursorConstraint["min"]){
+					console.log(this.xCursorConstraint["max"]);
 					// update the picking ray with the camera and pointer position
 					this.raycaster.setFromCamera( this.cursor, this.camera.perspectiveCamera );
 					// calculate objects intersecting the picking ray
 					const intersects = this.raycaster.intersectObjects( this.meshes );
 		
 					//Taking the first intersected object. This works
-					if(intersects.length > 0){
+					if(intersects.length > 0 && this.listenForClick){
 						this.resetSelectedMaterials();
 						let mesh = intersects[ 0 ].object;
 					
@@ -68,7 +72,7 @@ export default class PickMesh extends EventEmitter{
 						//this.emit("meshDeselected");
 					}
 				}
-			} );
+			});
 		})
 
 		window.addEventListener( 'keydown', (event) => {
@@ -167,6 +171,7 @@ export default class PickMesh extends EventEmitter{
 	}
 
 	resetXCursorConstraint(){
+		this.listenForClick = false;
 		this.xCursorConstraint["min"] = -1;
 		this.xCursorConstraint["max"] = 1;
 	}
