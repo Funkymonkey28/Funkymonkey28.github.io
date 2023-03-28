@@ -2,6 +2,7 @@ import Universe from '../Universe';
 import Iss from './Iss';
 import Environment from './Environment';
 import issDescription from './issDescription';
+import SplashScreen from '../Utils/SplashScreen';
 
 export default class Earth {
 	constructor() {
@@ -18,6 +19,8 @@ export default class Earth {
 
 			this.earth = this.resources.items.earth.scene;
 			this.scene.add(this.earth);
+
+			SplashScreen.hide();
 		});
 	}
 
